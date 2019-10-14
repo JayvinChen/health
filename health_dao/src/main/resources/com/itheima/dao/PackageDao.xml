@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.dao.PackageDao">
+    <select id="findPackage" parameterType="string" resultType="package">
+        select * from t_package
+        <if test="value != null and value.length>0">
+            where code like #{value} or name like #{value} or helpCode like #{value}
+        </if>
+    </select>
+
+    <resultMap id="packageResultMap" type="package">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="helpCode" property="helpCode"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="price" property="price"/>
+        <result column="remark" property="remark"/>
+        <result column="attention" property="attention"/>
+        <result column="img" property="img"/>
+    </resultMap>
+
+    <select id="findPackageById_withCheckGroupIds" parameterType="integer" resultMap="package_Groups">
+        SELECT p.*,pg.checkgroup_id FROM t_package p,t_package_checkgroup pg
+        where p.id=pg.package_id and p.id=#{id}
+    </select>
+    <resultMap id="package_Groups" type="package" extends="packageResultMap">
+        <collection property="checkGroups" ofType="checkGroup">
+            <result column="checkgroup_id" property="id"/>
+        </collection>
+    </resultMap>
+
+    <select id="findPackageById_WithCheckItems" resultMap="package_Items">
+        SELECT p.*,g.id gid,g.name gname,g.remark gremark,i.id iid,i.name iname
+        from t_package p,t_package_checkgroup pg,t_checkgroup g,t_checkgroup_checkitem gi,t_checkitem i
+        where p.id=pg.package_id and g.id=pg.checkgroup_id and gi.checkgroup_id=g.id
+        and gi.checkitem_id=i.id and p.id=#{id}
+    </select>
+    <resultMap id="package_Items" type="package" extends="packageResultMap">
+        <collection property="checkGroups" ofType="checkGroup">
+            <result property="remark" column="gremark"/>
+            <result property="name" column="gname"/>
+
+            <collection property="checkItems" ofType="checkItem">
+                <result column="iname" property="name"/>
+            </collection>
+        </collection>
+    </resultMap>
+</mapper>

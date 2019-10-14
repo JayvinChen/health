@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!--配置本项目的名字-->
+    <dubbo:application name="health_web"></dubbo:application>
+    <!--配置注册中心的地址-->
+    <dubbo:registry address="zookeeper://192.168.199.129:2181"></dubbo:registry>
+    <!--包扫描-->
+    <dubbo:annotation package="com.itheima.controller,com.itheima.service"></dubbo:annotation>
+
+    <!--
+        false表示启动时不检查有没有提供者
+        true表示启动时检查有没有提供者
+        一般:开发阶段设置为false,发布之后设置为true
+    -->
+    <dubbo:consumer timeout="600000" check="false"/>
+    <!-- 静态资源不拦截 -->
+    <mvc:default-servlet-handler/>
+    <!--文件上传组件-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600"/>
+        <property name="maxInMemorySize" value="4096"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+    <!--mvc注解驱动-->
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <!--使用fastJSON做java对象的json格式的字符串-->
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes" value="application/json"/>
+                <property name="features">
+                    <list>
+                        <!--WriteMapNullValue: 如果java对象中的属性值为空，则输出这个属性且它的值为null-->
+                        <value>WriteMapNullValue</value>
+                        <!--把日期类型转成字符串-->
+                        <value>WriteDateUseDateFormat</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <import resource="classpath:spring_security.xml"/>
+    <import resource="spring_redis.xml"/>
+</beans>

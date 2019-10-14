@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!--1. 给当前应用取名-->
+    <dubbo:application name="health_service"></dubbo:application>
+    <!--2. 连接注册中心-->
+    <dubbo:registry address="zookeeper://192.168.199.129:2181"></dubbo:registry>
+    <!--3. 指定远程调用的协议-->
+    <dubbo:protocol name="dubbo" port="20881"></dubbo:protocol>
+    <!--4. 使用dubbo的包扫描-->
+    <dubbo:annotation package="com.itheima.serviceImpl"></dubbo:annotation>
+    <!-- 配置事务管理者-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!-- 配置事务注解驱动，proxy-target-class="true"表示使用cglib的动态代理 -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+    <!-- 引入 mybatis_spring.xml-->
+    <import resource="classpath:mybatis_spring.xml"/>
+</beans>

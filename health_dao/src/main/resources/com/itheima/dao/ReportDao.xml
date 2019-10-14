@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.dao.ReportDao">
+    <select id="getBusinessDataReport" parameterType="string" resultMap="BusinessDataMap">
+        SELECT br.*,hp.`name`,hp.count,hp.proportion,hp.remark
+        from t_businessreport br,t_hotpackage hp
+        where br.reportDate=hp.reportDate and br.reportDate=#{reportDate}
+    </select>
+    <resultMap id="BusinessDataMap" type="BusinessData">
+        <result property="todayNewMember" column="todayNewMember"/>
+        <result property="totalMember" column="totalMember"/>
+        <result property="thisWeekNewMember" column="thisWeekNewMember"/>
+        <result property="thisMonthNewMember" column="thisMonthNewMember"/>
+        <result property="todayOrderNumber" column="todayOrderNumber"/>
+        <result property="todayVisitsNumber" column="todayVisitsNumber"/>
+        <result property="thisWeekOrderNumber" column="thisWeekOrderNumber"/>
+        <result property="thisWeekVisitsNumber" column="thisWeekVisitsNumber"/>
+        <result property="thisMonthOrderNumber" column="thisMonthOrderNumber"/>
+        <result property="thisMonthVisitsNumber" column="thisMonthVisitsNumber"/>
+        <result property="reportDate" column="reportDate"/>
+
+        <collection property="hotPackages" ofType="hotPackage">
+            <result property="name" column="name"/>
+            <result property="count" column="count"/>
+            <result property="proportion" column="proportion"/>
+            <result property="remark" column="remark"/>
+        </collection>
+    </resultMap>
+</mapper>
