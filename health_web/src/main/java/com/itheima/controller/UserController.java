@@ -29,13 +29,13 @@ public class UserController {
      */ 
     @GetMapping("/getUsernameAndMenus")
     public Result getUsernameAndMenus(){
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        // 也可通过以下方法获得用户名
+        // 方法1：获得用户名
         // org.springframework.security.core.userdetails.User user1 = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        // String username1 = user1.getUsername();
+        // String username = user1.getUsername();
+        // 方法2：
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User user = userService.findMenuByUsername(username);
         return new Result(true,MessageConstant.GET_USERNAME_SUCCESS,user);
     }
-
 }

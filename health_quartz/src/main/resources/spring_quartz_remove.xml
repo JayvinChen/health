@@ -26,7 +26,7 @@
     <bean id="trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <!--触发的时机：CronTrigger(定时定点) simpleTrigger(延迟多久后执行，每间隔多久后执行) -->
         <!--cronExpression: 七子：秒 分 时 日 月 周 年-->
-        <!--假设每天13:30执行任务，实际应为每天01:30-->
+        <!-- 假设每天01:30执行任务 -->
         <property name="cronExpression" value="0 30 01 * * ? *"/>
         <!--触发后就找job策略类-->
         <property name="jobDetail" ref="jobDetail"/>

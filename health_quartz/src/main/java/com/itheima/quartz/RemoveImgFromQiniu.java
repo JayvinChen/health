@@ -26,8 +26,9 @@ public class RemoveImgFromQiniu {
     public void removeImgs() {
         // 上次更新时间
         Date lastUpdateTime = packageDao.getUpdateTime();
+        // 如果为空，表示第一次进行删除
         if (null == lastUpdateTime) {
-            // 如果为空，则取第一次上传图片的时间
+            // 则取第一次上传图片的时间
             lastUpdateTime = QiNiuUtil.getFirstTime();
         }
         // 七牛云服务器的所有新增图片
