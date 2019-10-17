@@ -41,15 +41,15 @@ public class ReportController {
      */ 
     @GetMapping("/getMemberSexProportion")
     public Result getMemberSexProportion(){
-        List<Map<String,String>> count = reportService.getMemberSexProportion();
+        List<Map<String,String>> memberSexProportion = reportService.getMemberSexProportion();
         List<String> sex = new ArrayList();
-        if (null != count && count.size() != 0) {
-            for (Map<String, String> map : count) {
+        if (null != memberSexProportion && memberSexProportion.size() != 0) {
+            for (Map<String, String> map : memberSexProportion) {
                 sex.add(map.get("name"));
             }
         }
         Map<String,Object> data = new HashMap();
-        data.put("count",count);
+        data.put("memberSexProportion",memberSexProportion);
         data.put("sex",sex);
         return new Result(true,MessageConstant.GET_MEMBER_NUMBER_REPORT_SUCCESS,data);
     }
