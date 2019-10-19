@@ -49,7 +49,7 @@ public class ReportController {
             }
         }
         Map<String,Object> data = new HashMap();
-        data.put("memberSexProportion",memberSexProportion);
+        data.put("count",memberSexProportion);
         data.put("sex",sex);
         return new Result(true,MessageConstant.GET_MEMBER_NUMBER_REPORT_SUCCESS,data);
     }
