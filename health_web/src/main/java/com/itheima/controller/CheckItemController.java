@@ -1,6 +1,7 @@
 package com.itheima.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.github.pagehelper.PageInfo;
 import com.itheima.constant.MessageConstant;
 import com.itheima.entity.PageResult;
 import com.itheima.entity.QueryPageBean;
@@ -41,7 +42,10 @@ public class CheckItemController {
      */
     @PostMapping("/findPage")
     public Result findPage(@RequestBody QueryPageBean queryPageBean){
-        PageResult pageResult = checkItemService.findItemByCondition(queryPageBean);
+        // 有数据，前端不显示而已
+        // PageInfo<CheckItem> pageResult = checkItemService.findItemByCondition(queryPageBean);
+
+        PageResult<CheckItem> pageResult = checkItemService.findItemByCondition(queryPageBean);
         return new Result(true,MessageConstant.QUERY_CHECKITEM_SUCCESS,pageResult);
     }
 

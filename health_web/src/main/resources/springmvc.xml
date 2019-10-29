@@ -13,7 +13,7 @@
     <!--配置本项目的名字-->
     <dubbo:application name="health_web"></dubbo:application>
     <!--配置注册中心的地址-->
-    <dubbo:registry address="zookeeper://192.168.199.129:2181"></dubbo:registry>
+    <dubbo:registry address="zookeeper://192.168.211.128:2181"></dubbo:registry>
     <!--包扫描-->
     <dubbo:annotation package="com.itheima.controller,com.itheima.service"></dubbo:annotation>
 
